@@ -13,9 +13,16 @@ class UsersController < ApplicationController
     @book = Book.new
 
   def edit
+    user_id = params[:id].to_i
+  login_user_id = current_user.id
+  if(user_id != login_user_id)
+    redirect_to user_path(current_user)
+  end
+    @user = User.find(params[:id])
   end
 
   def update
+    @user = User.find(params[:id])
     if @user.update(user_params)
       redirect_to user_path(@user), notice: "You have updated user successfully."
     else
